@@ -1,17 +1,56 @@
+import { ComponentBuilderContext } from 'rnoh';
+import { RNApp, RNAbility, AnyJSBundleProvider, MetroJSBundleProvider, ResourceJSBundleProvider } from 'rnoh'
+import { SampleView, SAMPLE_VIEW_TYPE, PropsDisplayer } from "rnoh-sample-package"
+import { createRNPackages } from '../RNPackagesFactory'
+
+@Builder
+function CustomComponentBuilder(ctx: ComponentBuilderContext) {
+   if (ctx.componentName === SAMPLE_VIEW_TYPE) {
+    SampleView({
+      ctx: ctx.rnComponentContext,
+      tag: ctx.tag,
+      buildCustomComponent: CustomComponentBuilder
+    })
+  } else if (ctx.componentName === PropsDisplayer.NAME) {
+    PropsDisplayer({
+      ctx: ctx.rnComponentContext,
+      tag: ctx.tag
+    })
+  }
+
+}
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @StorageLink('RNAbility') rnAbility: RNAbility | undefined = undefined
+  @State shouldShow: boolean = false
+
+  onBackPress(): boolean | undefined {
+    return this.rnAbility?.onBackPress();
+  }
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+    Column() {
+      Button("点击加载 RN").onClick(()=>{
+        this.shouldShow = true
+      })
+      if (this.rnAbility && this.shouldShow) {
+        Text("RN页面")
+        RNApp({
+          rnInstanceConfig: { createRNPackages },
+          appKey: "app_name",
+          jsBundleProvider: new AnyJSBundleProvider([
+            new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
+        })
+      } else {
+        Text("原生页面")
       }
-      .width('100%')
+
     }
     .height('100%')
+    .width('100%')
+    .padding({top:50})
   }
 }
+

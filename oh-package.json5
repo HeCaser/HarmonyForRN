@@ -10,5 +10,8 @@
   "devDependencies": {
     "@ohos/hypium": "1.0.15",
     "@ohos/hamock": "1.0.0-rc"
+  },
+  "overrides": {
+    "rnoh": "file:./libs/rnoh-4.1.0.300.har"
   }
 }

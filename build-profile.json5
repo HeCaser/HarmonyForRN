@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/hepan/.ohos/config/default_HarmonyForRN_5bVZyGslOPS0kSXQnTXmgdh6gp31ihxRw0JVDugt8EI=.cer",
+          "storePassword": "0000001AE9C8BAC8C91991097BA637E836A90D257F70D40272AC8B92BA8BBD4549EF879FD84B119B19F2",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AF2481E77391858E4C04E8463F13B567A644615ECC997BDA01CE33967996E6B281FA50666E803",
+          "profile": "/Users/hepan/.ohos/config/default_HarmonyForRN_5bVZyGslOPS0kSXQnTXmgdh6gp31ihxRw0JVDugt8EI=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/hepan/.ohos/config/default_HarmonyForRN_5bVZyGslOPS0kSXQnTXmgdh6gp31ihxRw0JVDugt8EI=.p12"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
