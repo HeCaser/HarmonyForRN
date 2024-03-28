@@ -37,4 +37,85 @@
 ### 加载本地 bundle 包
 - 将 [RNForHarmony Demo](https://github.com/HeCaser/RNForHarmony) 中生成的 bundle 和 assets 文件放置在当前项目的 `entry/src/main/resources/rawfile` 目录下
 
-- 
+- 修改 `src/main/ets/pages/Index.ets` 文件, 加载 RN Bundle
+
+```ts
+@Entry
+@Component
+struct Index {
+  @StorageLink('RNAbility') rnAbility: RNAbility | undefined = undefined
+  @State shouldShow: boolean = false
+
+  onBackPress(): boolean | undefined {
+    return this.rnAbility?.onBackPress();
+  }
+
+  build() {
+    Column() {
+      Button("点击加载 RN").onClick(()=>{
+        this.shouldShow = true
+      })
+      if (this.rnAbility && this.shouldShow) {
+        Text("RN页面")
+        RNApp({
+          rnInstanceConfig: { createRNPackages },
+          appKey: "app_name", // RN 页面注册名称
+          jsBundleProvider: new AnyJSBundleProvider([
+            new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]), // 本地加载
+        })
+      } else {
+        Text("原生页面")
+      }
+
+    }
+    .height('100%')
+    .width('100%')
+    .padding({top:50})
+  }
+}
+
+```
+
+- RN 侧代码
+
+```ts
+AppRegistry.registerComponent('app_name', () => App);
+
+
+import * as React from 'react';
+import { Text, View, StyleSheet, Pressable } from 'react-native';//注入组件
+const App = () => {
+  return (
+    <Pressable onPress={() => {
+      console.log("Hello World RN")
+    }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Hello World ~ RN
+        </Text>
+        <Text style={styles.content}>
+          这里是 RN 开发的页面, 用一个 Text 展示文案
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+export default App;
+const styles = StyleSheet.create({//创建样式
+  container: {
+    backgroundColor: 'white',
+    height: '100%',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    textAlign: 'left',
+    fontSize: 40
+  },
+  content: {
+    marginTop: 10,
+    fontSize: 16,
+    textAlign: 'left'
+  }
+});
+```
