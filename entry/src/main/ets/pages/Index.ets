@@ -41,6 +41,7 @@ struct Index {
           rnInstanceConfig: { createRNPackages },
           appKey: "app_name",
           jsBundleProvider: new AnyJSBundleProvider([
+            new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
             new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
         })
       } else {
