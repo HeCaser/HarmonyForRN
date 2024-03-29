@@ -3,7 +3,7 @@
 2. 鸿蒙 & RN 基础开发与测试
 
 
-2024-03
+2024-03-28
 
 - 鸿蒙相关开发是白名单机制, 有保密需求, 因此相关文档, SDK 均不上传 github
 - 对 RN 的支持严格要求 RN 版本, 三方工具版本, IDE 版本
@@ -15,7 +15,7 @@
 
 <img src='img/project_config.jpg' width=500>
 
-## 接入步骤
+## 接入 & 加载
 
 ### 加载 har 包
 > rnoh 是鸿蒙支持 RN 所需要的工具
@@ -107,36 +107,73 @@ const styles = StyleSheet.create({//创建样式
 ### 利用 Metro 服务加载 RN bundle 包
 
 1. 安装 hdc 相关工具类 (已安装跳过此步骤)
-> Mac 电脑修改 .zshrc, 全局导出 HarmonyOS 相工具
+    > Mac 电脑修改 .zshrc, 全局导出 HarmonyOS 相工具
 
-```sh
-export PATH=${PATH}:/Users/hepan/Library/Huawei/Sdk/HarmonyOS-NEXT-DP1/base/toolchains
-HDC_SERVER_PORT=7035
-launchctl setenv HDC_SERVER_PORT $HDC_SERVER_PORT
-export HDC_SERVER_PORT
-```
+    ```sh
+    export PATH=${PATH}:/Users/hepan/Library/Huawei/Sdk/HarmonyOS-NEXT-DP1/base/toolchains
+    HDC_SERVER_PORT=7035
+    launchctl setenv HDC_SERVER_PORT $HDC_SERVER_PORT
+    export HDC_SERVER_PORT
+    ```
 
 2. 在 [RNForHarmony](https://github.com/HeCaser/RNForHarmony) 根目录执行 `npm run start` 启动 Metro 服务
 
 3. 连接真机, 执行 `hdc rport tcp:8081 tcp:8081` 命令
 
-<img src='img/hdc-rport.jpg'>
+    <img src='img/hdc-rport.jpg'>
 
 4. 修改 `src/main/ets/pages/Index.ets`  代码: 添加 `MetroJSBundleProvider`
 
-```ts
-
-  RNApp({
-     ...
-        appKey: "app_name",
-        jsBundleProvider: new AnyJSBundleProvider([
-        new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
-       ...
-    })
-```
+    ```ts
+    RNApp({
+        ...
+            appKey: "app_name",
+            jsBundleProvider: new AnyJSBundleProvider([
+            new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
+        ...
+        })
+    ```
 
 5. 重启手机即可加载 Metro 服务
    
    <img src='img/metro-load.jpg'>
 
 6. 修改 RN 侧代码, 保存后发现代码立即生效了~
+
+2024-03-29
+
+## 初始化参数
+> 鸿蒙加载 RN 页面时, 可以携带初始化参数到 RN 侧
+
+- RN 页面获取参数
+  
+    ```ts
+    // 与 Android, iOS 开发一样, 参数存放在构造方法中
+    const InitParam = (prop: object) => {
+        return (
+            <View style={{ width: '100%', height: '100%', marginTop: 100, padding: 20}>
+                <Text style={{ marginTop: 20 }}>
+                    初始化参数:{JSON.stringify(prop)}
+                </Text>
+            </View>
+        );
+    };
+    export default InitParam;
+    ```
+
+- 鸿蒙侧传递参数
+
+    ```ts
+    RNApp({
+      ...
+        initialProps:{"param":'init data from harmony'} as Record<string, string>,
+      ...
+    })
+    ```
+
+- RN 实际获得的参数是用户传递的参数 + SDK 补充的参数
+
+    `{"param":"init data from harmony","concurrentRoot":true,"rootTag":1}`
+
+
+## 

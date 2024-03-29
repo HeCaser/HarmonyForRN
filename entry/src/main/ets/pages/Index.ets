@@ -39,7 +39,8 @@ struct Index {
         Text("RN页面")
         RNApp({
           rnInstanceConfig: { createRNPackages },
-          appKey: "app_name",
+          initialProps:{"param":'init data from harmony'} as  Record<string, string>,
+          appKey: "init_param",
           jsBundleProvider: new AnyJSBundleProvider([
             new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
             new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
