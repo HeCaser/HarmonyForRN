@@ -35,7 +35,15 @@ struct Index {
       "url": "pages/RnPageBasic"
     },
     {
-      "name": "加载 RN 页面",
+      "name": "RN 页面 - 初始化参数",
+      "url": "pages/RnPageParam"
+    },
+    {
+      "name": "RN 页面 - bridge",
+      "url": "pages/RnPageParam"
+    },
+    {
+      "name": "RN 页面 - CustomComponent",
       "url": "pages/RnPageParam"
     }
   ]
