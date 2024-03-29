@@ -1,5 +1,7 @@
 {
   "src": [
-    "pages/Index"
+    "pages/RnPageBasic",
+    "pages/Index",
+    "pages/RnPageParam"
   ]
 }

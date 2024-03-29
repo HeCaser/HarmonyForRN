@@ -2,10 +2,11 @@ import { ComponentBuilderContext } from 'rnoh';
 import { RNApp, RNAbility, AnyJSBundleProvider, MetroJSBundleProvider, ResourceJSBundleProvider } from 'rnoh'
 import { SampleView, SAMPLE_VIEW_TYPE, PropsDisplayer } from "rnoh-sample-package"
 import { createRNPackages } from '../RNPackagesFactory'
+import router from '@ohos.router';
 
 @Builder
 function CustomComponentBuilder(ctx: ComponentBuilderContext) {
-   if (ctx.componentName === SAMPLE_VIEW_TYPE) {
+  if (ctx.componentName === SAMPLE_VIEW_TYPE) {
     SampleView({
       ctx: ctx.rnComponentContext,
       tag: ctx.tag,
@@ -20,39 +21,51 @@ function CustomComponentBuilder(ctx: ComponentBuilderContext) {
 
 }
 
+interface Item {
+  name: string,
+  url?: string
+}
+
 @Entry
 @Component
 struct Index {
-  @StorageLink('RNAbility') rnAbility: RNAbility | undefined = undefined
-  @State shouldShow: boolean = false
-
-  onBackPress(): boolean | undefined {
-    return this.rnAbility?.onBackPress();
-  }
+  @State items: Item[] = [
+    {
+      "name": "加载 RN 页面",
+      "url": "pages/RnPageBasic"
+    },
+    {
+      "name": "加载 RN 页面",
+      "url": "pages/RnPageParam"
+    }
+  ]
 
   build() {
     Column() {
-      Button("点击加载 RN").onClick(()=>{
-        this.shouldShow = true
-      })
-      if (this.rnAbility && this.shouldShow) {
-        Text("RN页面")
-        RNApp({
-          rnInstanceConfig: { createRNPackages },
-          initialProps:{"param":'init data from harmony'} as  Record<string, string>,
-          appKey: "init_param",
-          jsBundleProvider: new AnyJSBundleProvider([
-            new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
-            new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
-        })
-      } else {
-        Text("原生页面")
+      Text("RNAbility 功能入口").margin({ bottom: 20 })
+      Scroll() {
+        Column() {
+          ForEach(this.items, (item: Item) => {
+            Text(item.name)
+              .backgroundColor("blue")
+              .fontSize(16)
+              .textAlign(TextAlign.Center)
+              .fontColor('white')
+              .width('100%')
+              .height(40)
+              .borderRadius(40)
+              .margin({ top: 16 })
+              .onClick(() => {
+                router.pushUrl({ url: item.url })
+              })
+          })
+        }
       }
-
     }
     .height('100%')
     .width('100%')
-    .padding({top:50})
+    .padding({ top: 50, left: 20, right: 20 })
+
   }
 }
 
