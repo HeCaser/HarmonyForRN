@@ -1,6 +1,6 @@
 import { RNPackageContext, RNPackage } from 'rnoh/ts';
-import { SamplePackage } from 'rnoh-sample-package/ts';
+import { SampleTurboModulePackage } from  './TurboModule/SampleTurboModulePackage'
 
 export function createRNPackages(ctx: RNPackageContext): RNPackage[] {
-  return [new SamplePackage(ctx)];
+  return [new SampleTurboModulePackage(ctx)];
 }

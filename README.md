@@ -176,4 +176,16 @@ const styles = StyleSheet.create({//创建样式
     `{"param":"init data from harmony","concurrentRoot":true,"rootTag":1}`
 
 
-## 
+2024-04-01
+
+##  Bridge
+
+RN 侧改动查看 [RNForHarmony-README](https://github.com/HeCaser/RNForHarmony)
+
+鸿蒙侧改动
+
+1. 实现与 RN 侧对应的类 `SampleTurboModule` 并实现相关方法 : [SampleTurboModule.ets](entry/src/main/ets/TurboModule/SampleTurboModule.ets)
+
+2. 实现 `SampleTurboModulesFactory` 用于创建 `SampleTurboModule` : [SampleTurboModulePackage.ets](entry/src/main/ets/TurboModule/SampleTurboModulePackage.ets)
+
+3. 将 `SampleTurboModulesFactory` 注入到 `RNPackagesFactory` , 在 RN 环境初始化时通过 `createRNPackages` 管理相关 Packages

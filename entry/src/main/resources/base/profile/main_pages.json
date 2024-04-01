@@ -2,6 +2,7 @@
   "src": [
     "pages/RnPageBasic",
     "pages/Index",
-    "pages/RnPageParam"
+    "pages/RnPageParam",
+    "pages/bridge/RnPageBridge"
   ]
 }

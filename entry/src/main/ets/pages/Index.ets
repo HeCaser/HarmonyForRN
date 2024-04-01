@@ -40,7 +40,7 @@ struct Index {
     },
     {
       "name": "RN 页面 - bridge",
-      "url": "pages/RnPageParam"
+      "url": "pages/bridge/RnPageBridge"
     },
     {
       "name": "RN 页面 - CustomComponent",
