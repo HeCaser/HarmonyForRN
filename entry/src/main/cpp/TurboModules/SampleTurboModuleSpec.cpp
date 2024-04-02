@@ -25,6 +25,12 @@ static jsi::Value __hostFunction_NativeSampleTurboCxxModuleSpecJSI_doAsyncJob(js
     return jsi::Value(static_cast<ArkTSTurboModule &>(turboModule).callAsync(rt, "doAsyncJob", args, count));
 }
 
+static jsi::Value __hostFunction_NativeSampleTurboCxxModuleSpecJSI_doAsyncJob1(jsi::Runtime &rt,
+                                                                              react::TurboModule &turboModule,
+                                                                              const jsi::Value *args, size_t count) {
+    return jsi::Value(static_cast<ArkTSTurboModule &>(turboModule).callAsync(rt, "doAsyncJob1", args, count));
+}
+
 static jsi::Value __hostFunction_NativeSampleTurboCxxModuleSpecJSI_rnLog(jsi::Runtime &rt,
                                                                          react::TurboModule &turboModule,
                                                                          const jsi::Value *args, size_t count) {
@@ -53,6 +59,7 @@ NativeSampleTurboModuleSpecJSI::NativeSampleTurboModuleSpecJSI(const ArkTSTurboM
     methodMap_["registerFunction"] =
         MethodMetadata{0, __hostFunction_NativeSampleTurboCxxModuleSpecJSI_registerFunction};
     methodMap_["doAsyncJob"] = MethodMetadata{1, __hostFunction_NativeSampleTurboCxxModuleSpecJSI_doAsyncJob};
+    methodMap_["doAsyncJob1"] = MethodMetadata{1, __hostFunction_NativeSampleTurboCxxModuleSpecJSI_doAsyncJob1};
     methodMap_["rnLog"] = MethodMetadata{1, __hostFunction_NativeSampleTurboCxxModuleSpecJSI_rnLog};
     methodMap_["putPreferencesData"] =
         MethodMetadata{1, __hostFunction_NativeSampleTurboCxxModuleSpecJSI_putPreferencesData};

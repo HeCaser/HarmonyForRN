@@ -39,6 +39,20 @@ export class SampleTurboModule extends TurboModule {
     });
   }
 
+  doAsyncJob1(shouldResolve: boolean): Promise<string> {
+    console.log(`hepan doAsyncJob1 :  返回一个 promise`)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (shouldResolve) {
+          resolve(`success time = ${this.getTime()}`);
+        } else {
+          reject(`rejected time = ${this.getTime()}`);
+        }
+      }, 1000);
+    });
+  }
+
+
   rnLog(info: string) {
     console.log("hepan ReactNative.log: " + info)
   }
