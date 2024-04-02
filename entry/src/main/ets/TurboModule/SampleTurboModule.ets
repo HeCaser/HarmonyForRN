@@ -11,29 +11,31 @@ export interface TurboModuleEventData {
 
 export class SampleTurboModule extends TurboModule {
   pushStringToHarmony(arg: string, id?: number): string {
-    if (id){
-      let data: TurboModuleEventData = {param: arg}
-      emitter.emit({ eventId: id } , {data: data})
+    console.log(`hepan pushStringToHarmony:  arg = ${arg}  id = ${id}`)
+    if (id) {
+      let data: TurboModuleEventData = { param: arg }
+      emitter.emit({ eventId: id }, { data: data })
     }
-    return arg;
+    return `${this.getTime()}: Native 返回 ok }`;
   }
 
   registerFunction(onComplete: (value: string) => void): void {
-    console.log(`RNOH SampleTurboModule::registerFunction + trigger`);
+    console.log(`hepan registerFunction : 接收一个回调函数 onComplete`)
     setTimeout(() => {
-      onComplete?.('... from native side');
+      onComplete?.(this.getTime()+'... from native side' );
     }, 1000);
   }
 
   doAsyncJob(shouldResolve: boolean): Promise<string> {
+    console.log(`hepan doAsyncJob :  返回一个 promise`)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (shouldResolve) {
-          resolve('resolved on native side');
+          resolve(`success time = ${this.getTime()}`);
         } else {
-          reject('rejected on native side');
+          reject(`rejected time = ${this.getTime()}`);
         }
-      }, 100);
+      }, 1000);
     });
   }
 
@@ -41,4 +43,9 @@ export class SampleTurboModule extends TurboModule {
     console.log("hepan ReactNative.log: " + info)
   }
 
+
+  getTime(): string {
+    let date = new Date()
+    return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+  }
 }
