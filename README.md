@@ -189,3 +189,30 @@ RN 侧改动查看 [RNForHarmony-README](https://github.com/HeCaser/RNForHarmony
 2. 实现 `SampleTurboModulesFactory` 用于创建 `SampleTurboModule` : [SampleTurboModulePackage.ets](entry/src/main/ets/TurboModule/SampleTurboModulePackage.ets)
 
 3. 将 `SampleTurboModulesFactory` 注入到 `RNPackagesFactory` , 在 RN 环境初始化时通过 `createRNPackages` 管理相关 Packages
+
+运行双端代码, 发现 RN 侧调用方法时会遇到如下报错(找不到方法定义)
+
+<img src="img/fun_undefined.jpg" width='300'>
+
+产生上述的原因是因为 TurboModule 需要通过 c++ 代码映射关联, facebook 提供了 Android iOS 端的代码自动生产工具 [codegen](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/codegen.md), 鸿蒙侧可以复用 Android 平台相关 c++ 代码
+
+鸿蒙侧 C 代码改动
+> 因为自动生成逻辑没有跑通, 所以 c++ 代码还是用官方 Demo 提供的文件
+
+这里只需要添加 Bridge 相关的文件, 无需 Demo 中 Fabric View 相关文件
+
+<img src='img/c_code.jpg'>
+
+添加两个文件 `SampleTurboModuleSpec.cpp` 和 `SampleTurboModuleSpec.h` 后需要在 `CMakeLists.txt` 中引入
+
+```
+add_library(rnoh_app SHARED
+    "./PackageProvider.cpp"
+    ...
+    "./TurboModules/SampleTurboModuleSpec.cpp" // 引入
+    ...
+    "${RNOH_CPP_DIR}/RNOHAppNapiBridge.cpp"
+)
+```
+
+c++ 文件配置完毕后, 再次运行 App, 成功. 

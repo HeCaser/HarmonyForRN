@@ -12,6 +12,7 @@ add_subdirectory("${OH_MODULE_DIR}/rnoh-sample-package/src/main/cpp" ./sample-pa
 
 add_library(rnoh_app SHARED
     "./PackageProvider.cpp"
+    "./TurboModules/SampleTurboModuleSpec.cpp"
     "${RNOH_CPP_DIR}/RNOHAppNapiBridge.cpp"
 )
 
