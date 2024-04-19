@@ -3,7 +3,7 @@ import { RNApp, RNAbility, AnyJSBundleProvider, MetroJSBundleProvider, ResourceJ
 import { SampleView, SAMPLE_VIEW_TYPE, PropsDisplayer } from "rnoh-sample-package"
 import { createRNPackages } from '../RNPackagesFactory'
 import router from '@ohos.router';
-
+import uri from '@ohos.uri';
 @Builder
 function CustomComponentBuilder(ctx: ComponentBuilderContext) {
   if (ctx.componentName === SAMPLE_VIEW_TYPE) {
@@ -50,7 +50,14 @@ struct Index {
 
   build() {
     Column() {
-      Text("RNAbility 功能入口").margin({ bottom: 20 })
+      Text("RNAbility 功能入口").margin({ bottom: 20 }).onClick(()=>{
+        let url = 'https://danjuanfunds.com/funding/000729?a=8'
+        let url1 = 'https://danjuanfunds.com/fund/000729?a=0'
+        let url2 = 'https://danjuanfunds.com/funding/000729'
+        this.changeUrl2RnFundUrl(url)
+        this.changeUrl2RnFundUrl(url1)
+        this.changeUrl2RnFundUrl(url2)
+      })
       Scroll() {
         Column() {
           ForEach(this.items, (item: Item) => {
@@ -75,5 +82,24 @@ struct Index {
     .padding({ top: 50, left: 20, right: 20 })
 
   }
+
+    changeUrl2RnFundUrl(url: string): string {
+
+  if (!url) return ''
+  let Uri = new uri.URI(url)
+  let path: string = Uri.path ? Uri.path : url
+
+  const regex = /^\/fund(ing)?\/(\d+)$/;
+
+  const match = path.match(regex)
+  if (match && match.length) {
+    let code = match[2]
+    let param =  url.includes("?")? "&fd_code="+code: "?fd_code="+code
+    return url.replace(path,"/rn/FundDetail/Product")+param
+
+  }
+
+  return url
+}
 }
 
