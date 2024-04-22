@@ -1,6 +1,7 @@
-import { ComponentBuilderContext } from 'rnoh';
+import { ComponentBuilderContext, RNInstance } from 'rnoh';
 import { RNApp, RNAbility, AnyJSBundleProvider, MetroJSBundleProvider, ResourceJSBundleProvider } from 'rnoh'
 import { SampleView, SAMPLE_VIEW_TYPE, PropsDisplayer } from "rnoh-sample-package"
+import { MetroBaseRN } from '../rn/MetroBaseRN';
 import { createRNPackages } from '../RNPackagesFactory'
 
 @Builder
@@ -24,7 +25,16 @@ function CustomComponentBuilder(ctx: ComponentBuilderContext) {
 struct Index {
   @StorageLink('RNAbility') rnAbility: RNAbility | undefined = undefined
   @State shouldShow: boolean = false
-  @State inputText: string = 'app_name'
+  @State inputText: string = 'snowbox'
+  public static metroInstance: RNInstance
+  aboutToAppear(): void {
+    setTimeout(()=>{
+      this.shouldShow = true
+    },500)
+  }
+
+
+
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
@@ -43,14 +53,21 @@ struct Index {
         })
 
       if (this.rnAbility && this.shouldShow) {
-        RNApp({
-          rnInstanceConfig: { createRNPackages },
-          initialProps: { "param": 'init data from harmony' } as Record<string, string>,
-          appKey: this.inputText,
-          jsBundleProvider: new AnyJSBundleProvider([
-            new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
-            new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
-        }).height('100%').margin({ top: 10 })
+        // RNApp({
+        //   rnInstanceConfig: { createRNPackages },
+        //   initialProps: { "param": 'init data from harmony' } as Record<string, string>,
+        //   appKey: this.inputText,
+        //   jsBundleProvider: new AnyJSBundleProvider([
+        //     new MetroJSBundleProvider(), // 先尝试 Metro 加载, 加载失败会继续进行本地加载
+        //     new ResourceJSBundleProvider(this.rnAbility.context.resourceManager, 'bundle.harmony.js')]),
+        // }).height('100%').margin({ top: 10 })
+
+        MetroBaseRN({
+          moduleName: this.inputText,
+          initProps: { "param": 'init data from harmony' } as Record<string, string>,
+        }).align(Alignment.Top).margin({ top: 0 })
+
+
       } else {
         Text("原生页面").width('100%').height('100%').textAlign(TextAlign.Center)
       }
