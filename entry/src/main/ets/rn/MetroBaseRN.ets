@@ -34,6 +34,7 @@ export struct MetroBaseRN {
 
         const jsBundleExecutionStatus = this.rnInstance.getBundleExecutionStatus(provider?.getURL())
         if (provider && jsBundleExecutionStatus === undefined) {
+          // 这里必须利用 await 等待成功. 否则无法成功加载 RN
           await this.rnInstance.runJSBundle(provider)
           this.shouldShow = true
           return;
