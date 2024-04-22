@@ -28,7 +28,7 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text(`本页展示 RN 基础: 加载一个 RN 页面(默认 app_name), 支持 Metro 和本地文件加载`).height(50)
+      Text(`1本页展示 RN 基础: 加载一个 RN 页面(默认 app_name), 支持 Metro 和本地文件加载`).height(50)
       TextInput({
         placeholder: '输入要加载的 RN 页面',
       }).onChange((value) => {
